@@ -1,13 +1,12 @@
-const Contract = require('../models/contracts');
-const Supplier = require('../models/suppliers'); 
-
+const Contract = require("../models/contracts");
+const Supplier = require("../models/suppliers");
 
 // messages
-const contractNotFound = 'Contract not found';
-const supplierNotFound = 'Supplier not found';
-const invalidSupplierIdFormat = 'Invalid Supplier ID format.';
+const contractNotFound = "Contract not found";
+const supplierNotFound = "Supplier not found";
+const invalidSupplierIdFormat = "Invalid Supplier ID format.";
 const invalidContractIdFormat = "Contract ID don't have 24 characters.";
-const contractDeleted = 'Contract deleted successfully';
+const contractDeleted = "Contract deleted successfully";
 
 // show all contracts
 const getAllContracts = async (req, res) => {
@@ -30,8 +29,8 @@ const getSingleContract = async (req, res) => {
     }
     res.status(200).json(contract);
   } catch (error) {
-    if (error.name === 'CastError' && error.kind === 'ObjectId') {
-        return res.status(400).json({ message: invalidContractIdFormat });
+    if (error.name === "CastError" && error.kind === "ObjectId") {
+      return res.status(400).json({ message: invalidContractIdFormat });
     }
     next(error);
   }
@@ -53,14 +52,16 @@ const createContract = async (req, res) => {
 
     const existingSupplier = await Supplier.findById(req.body.supplier);
     if (!existingSupplier) {
-        return res.status(400).json({ message: supplierNotFound });
+      return res.status(400).json({ message: supplierNotFound });
     }
 
     const savedContract = await newContract.save();
     res.status(201).json(savedContract);
   } catch (error) {
-    if (error.name === 'ValidationError') {
-      return res.status(400).json({ message: error.message, errors: error.errors });
+    if (error.name === "ValidationError") {
+      return res
+        .status(400)
+        .json({ message: error.message, errors: error.errors });
     }
     next(error);
   }
@@ -71,15 +72,23 @@ const updateContract = async (req, res) => {
   //#swagger.tags = ['Contracts'];
   try {
     const { id } = req.params;
-    const { contractNumber, supplier, object, startDate, endDate, value, status } = req.body;
+    const {
+      contractNumber,
+      supplier,
+      object,
+      startDate,
+      endDate,
+      value,
+      status,
+    } = req.body;
     if (req.body.supplier) {
       if (!mongoose.Types.ObjectId.isValid(supplier)) {
-        return res.status(400).json({ message: 'Invalid supplier ID format in request body.' });
+        return res.status(400).json({ message: invalidSupplierIdFormat });
       }
 
-    const existingSupplier = await Supplier.findById(supplier);
+      const existingSupplier = await Supplier.findById(supplier);
       if (!existingSupplier) {
-        return res.status(400).json({ message: 'Supplier not found with the provided ID.' });
+        return res.status(400).json({ message: supplierNotFound });
       }
     }
 
@@ -93,11 +102,13 @@ const updateContract = async (req, res) => {
     }
     res.status(200).json(updatedContract);
   } catch (error) {
-    if (error.name === 'CastError' && error.kind === 'ObjectId') {
-        return res.status(400).json({ message: invalidContractIdFormat });
+    if (error.name === "CastError" && error.kind === "ObjectId") {
+      return res.status(400).json({ message: invalidContractIdFormat });
     }
-    if (error.name === 'ValidationError') {
-      return res.status(400).json({ message: error.message, errors: error.errors });
+    if (error.name === "ValidationError") {
+      return res
+        .status(400)
+        .json({ message: error.message, errors: error.errors });
     }
     next(error);
   }
@@ -115,8 +126,8 @@ const deleteContract = async (req, res) => {
     }
     res.status(200).json({ message: contractDeleted });
   } catch (error) {
-    if (error.name === 'CastError' && error.kind === 'ObjectId') {
-        return res.status(400).json({ message: invalidContractIdFormat });
+    if (error.name === "CastError" && error.kind === "ObjectId") {
+      return res.status(400).json({ message: invalidContractIdFormat });
     }
     next(error);
   }

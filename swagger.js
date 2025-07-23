@@ -10,7 +10,7 @@ const doc = {
     description: 'A REST API for managing suppliers and their contracts, built with Node.js, Express, and MongoDB.',
     version: '1.0.0',
   },
-  host: 'cse341-project2-5tau.onrender.com/',
+  host: 'cse341-project2-5tau.onrender.com',
     schemes: ['https'],
   tags: [
     {

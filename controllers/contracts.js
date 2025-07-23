@@ -6,7 +6,7 @@ const Supplier = require("../models/suppliers");
 // messages
 const contractNotFound = "Contract not found";
 const supplierNotFound = "Supplier not found";
-const invalidSupplierIdFormat = "Invalid Supplier ID format.";
+const invalidSupplierIdFormat = "Supplier ID don't have 24 characters.";
 const invalidContractIdFormat = "Contract ID don't have 24 characters.";
 const contractDeleted = "Contract deleted successfully";
 

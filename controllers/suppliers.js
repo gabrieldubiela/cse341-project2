@@ -7,7 +7,7 @@ const getAllSuppliers = async (req, res) => {
     const suppliers = await Supplier.find();
     res.status(200).json(suppliers);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
@@ -21,7 +21,10 @@ const getSingleSupplier = async (req, res) => {
     }
     res.status(200).json(supplier);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'CastError' && error.kind === 'ObjectId') {
+        return res.status(400).json({ message: 'Invalid Supplier ID format.' });
+    }
+    next(error);
   }
 };
 
@@ -40,7 +43,10 @@ const createSupplier = async (req, res) => {
     const newSupplier = await supplier.save();
     res.status(201).json(newSupplier);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: error.message, errors: error.errors });
+    }
+    next(error);
   }
 };
 
@@ -59,11 +65,17 @@ const updateSupplier = async (req, res) => {
     }
     res.status(200).json(updatedSupplier);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    if (error.name === 'CastError' && error.kind === 'ObjectId') {
+        return res.status(400).json({ message: 'Invalid Supplier ID format.' });
+    }
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: error.message, errors: error.errors });
+    }
+    next(error);
   }
 };
 
-// DELETE a supplier by ID
+// delete a supplier by ID
 const deleteSupplier = async (req, res) => {
   //#swagger.tags = ['Suppliers'];
   try {
@@ -75,7 +87,10 @@ const deleteSupplier = async (req, res) => {
     }
     res.status(200).json({ message: "Supplier deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'CastError' && error.kind === 'ObjectId') {
+        return res.status(400).json({ message: 'Invalid Supplier ID format.' });
+    }
+    next(error);
   }
 };
 

@@ -34,10 +34,25 @@ app.use('/contracts', contractRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
+    console.error(err.stack); 
 
+    if (err.name === 'CastError') { 
+        return res.status(400).json({ message: 'Invalid ID format.' });
+    }
+    if (err.name === 'ValidationError') {
+        const errors = {};
+        for (const field in err.errors) {
+            errors[field] = err.errors[field].message;
+        }
+        return res.status(400).json({ message: 'Validation failed', errors });
+    }
+    if (err.code === 11000) { 
+        return res.status(409).json({ message: 'Duplicate key error: A record with this value already exists.' });
+    }
+
+    // Generic error for any other issues
+    res.status(500).json({ message: 'Something went wrong on the server.' });
+});
 
 // Start the server
 app.listen(port, () => {

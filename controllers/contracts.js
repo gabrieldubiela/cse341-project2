@@ -5,10 +5,10 @@ const Supplier = require('../models/suppliers');
 const getAllContracts = async (req, res) => {
   //#swagger.tags = ['Contracts'];
   try {
-    const contracts = await Contract.find().populate('supplier', 'name email'); 
+    const contracts = await Contract.find().populate('supplier');
     res.status(200).json(contracts);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
 
@@ -16,45 +16,45 @@ const getAllContracts = async (req, res) => {
 const getSingleContract = async (req, res) => {
   //#swagger.tags = ['Contracts'];
   try {
-    const contract = await Contract.findById(req.params.id).populate('supplier', 'name email');
+    const contract = await Contract.findById(req.params.id).populate('supplier');
     if (!contract) {
       return res.status(404).json({ message: 'Contract not found' });
     }
     res.status(200).json(contract);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'CastError' && error.kind === 'ObjectId') {
+        return res.status(400).json({ message: 'Invalid Contract ID format.' });
+    }
+    next(error);
   }
 };
 
 // create a new contract
 const createContract = async (req, res) => {
   //#swagger.tags = ['Contracts'];
-  const { contractNumber, supplier, object, startDate, endDate, value, status } = req.body;
-  if (!contractNumber || !supplier || !object || !startDate || !endDate || !value) {
-    return res.status(400).json({ message: 'Missing required contract fields.' });
-  }
-
   try {
-    const existingSupplier = await Supplier.findById(supplier);
-    if (!existingSupplier) {
-      return res.status(400).json({ message: 'Supplier not found for this contract.' });
-    }
-
-    const contract = new Contract({
-      contractNumber,
-      supplier,
-      object,
-      startDate,
-      endDate,
-      value,
-      status: status || 'pending',
+    const newContract = new Contract({
+      contractNumber: req.body.contractNumber,
+      supplier: req.body.supplier,
+      object: req.body.object,
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      value: req.body.value,
+      status: req.body.status,
     });
 
-    const newContract = await contract.save();
-    await newContract.populate('supplier', 'name email');
-    res.status(201).json(newContract);
+    const existingSupplier = await Supplier.findById(req.body.supplier);
+    if (!existingSupplier) {
+        return res.status(400).json({ message: 'Supplier not found with the provided ID.' });
+    }
+
+    const savedContract = await newContract.save();
+    res.status(201).json(savedContract);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: error.message, errors: error.errors });
+    }
+    next(error);
   }
 };
 
@@ -63,30 +63,36 @@ const updateContract = async (req, res) => {
   //#swagger.tags = ['Contracts'];
   try {
     const { id } = req.params;
-    const { supplier, ...updateData } = req.body; 
-    if (supplier) {
-      const existingSupplier = await Supplier.findById(supplier);
-      if (!existingSupplier) {
-        return res.status(400).json({ message: 'Provided supplier not found.' });
-      }
+    if (req.body.supplier) {
+        const existingSupplier = await Supplier.findById(req.body.supplier);
+        if (!existingSupplier) {
+            return res.status(400).json({ message: 'Supplier not found with the provided ID.' });
+        }
     }
 
     const updatedContract = await Contract.findByIdAndUpdate(id, req.body, {
       new: true,
-      runValidators: true 
-    }).populate('supplier', 'name email');
+      runValidators: true,
+    }).populate('supplier');
 
     if (!updatedContract) {
       return res.status(404).json({ message: 'Contract not found' });
     }
     res.status(200).json(updatedContract);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    if (error.name === 'CastError' && error.kind === 'ObjectId') {
+        return res.status(400).json({ message: 'Invalid Contract ID format.' });
+    }
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: error.message, errors: error.errors });
+    }
+    next(error);
   }
 };
 
 // delete a contract by ID
 const deleteContract = async (req, res) => {
+  //#swagger.tags = ['Contracts'];
   try {
     const { id } = req.params;
     const deletedContract = await Contract.findByIdAndDelete(id);
@@ -96,9 +102,13 @@ const deleteContract = async (req, res) => {
     }
     res.status(200).json({ message: 'Contract deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'CastError' && error.kind === 'ObjectId') {
+        return res.status(400).json({ message: 'Invalid Contract ID format.' });
+    }
+    next(error);
   }
 };
+
 
 // change the status of a contract
 const changeContractStatus = async (req, res) => {
@@ -114,14 +124,20 @@ const changeContractStatus = async (req, res) => {
       id,
       { status: status },
       { new: true, runValidators: true }
-    ).populate('supplier', 'name email');
+    ).populate('supplier');
 
     if (!updatedContract) {
       return res.status(404).json({ message: 'Contract not found' });
     }
     res.status(200).json(updatedContract);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    if (error.name === 'CastError' && error.kind === 'ObjectId') {
+        return res.status(400).json({ message: 'Invalid Contract ID format.' });
+    }
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: error.message, errors: error.errors });
+    }
+    next(error);
   }
 };
 

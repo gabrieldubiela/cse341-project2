@@ -61,7 +61,7 @@ router.patch("/:id/status",
     }
     next();
   },
-  contractsController.createContract
+  contractsController.changeContractStatus
 );
 
 module.exports = router;

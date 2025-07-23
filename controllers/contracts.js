@@ -5,7 +5,7 @@ const Supplier = require('../models/suppliers');
 const getAllContracts = async (req, res) => {
   //#swagger.tags = ['Contracts'];
   try {
-    const contracts = await Contract.find().populate('supplier');
+    const contracts = await Contract.find();
     res.status(200).json(contracts);
   } catch (error) {
     next(error);
@@ -16,7 +16,7 @@ const getAllContracts = async (req, res) => {
 const getSingleContract = async (req, res) => {
   //#swagger.tags = ['Contracts'];
   try {
-    const contract = await Contract.findById(req.params.id).populate('supplier');
+    const contract = await Contract.findById(req.params.id);
     if (!contract) {
       return res.status(404).json({ message: 'Contract not found' });
     }
@@ -73,7 +73,7 @@ const updateContract = async (req, res) => {
     const updatedContract = await Contract.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
-    }).populate('supplier, object, startDate, endDate, value, status');
+    }).populate();
 
     if (!updatedContract) {
       return res.status(404).json({ message: 'Contract not found' });

@@ -1,6 +1,14 @@
 const Contract = require('../models/contracts');
 const Supplier = require('../models/suppliers'); 
 
+
+// messages
+const contractNotFound = 'Contract not found';
+const supplierNotFound = 'Supplier not found';
+const invalidSupplierIdFormat = 'Invalid Supplier ID format.';
+const invalidContractIdFormat = "Contract ID don't have 24 characters.";
+const contractDeleted = 'Contract deleted successfully';
+
 // show all contracts
 const getAllContracts = async (req, res) => {
   //#swagger.tags = ['Contracts'];
@@ -18,12 +26,12 @@ const getSingleContract = async (req, res) => {
   try {
     const contract = await Contract.findById(req.params.id);
     if (!contract) {
-      return res.status(404).json({ message: 'Contract not found' });
+      return res.status(404).json({ message: contractNotFound });
     }
     res.status(200).json(contract);
   } catch (error) {
     if (error.name === 'CastError' && error.kind === 'ObjectId') {
-        return res.status(400).json({ message: 'Invalid Contract ID format.' });
+        return res.status(400).json({ message: invalidContractIdFormat });
     }
     next(error);
   }
@@ -45,7 +53,7 @@ const createContract = async (req, res) => {
 
     const existingSupplier = await Supplier.findById(req.body.supplier);
     if (!existingSupplier) {
-        return res.status(400).json({ message: 'Supplier not found with the provided ID.' });
+        return res.status(400).json({ message: supplierNotFound });
     }
 
     const savedContract = await newContract.save();
@@ -65,10 +73,14 @@ const updateContract = async (req, res) => {
     const { id } = req.params;
     const { contractNumber, supplier, object, startDate, endDate, value, status } = req.body;
     if (req.body.supplier) {
-        const existingSupplier = await Supplier.findById(req.body.supplier);
-        if (!existingSupplier) {
-            return res.status(400).json({ message: 'Supplier not found with the provided ID.' });
-        }
+      if (!mongoose.Types.ObjectId.isValid(supplier)) {
+        return res.status(400).json({ message: 'Invalid supplier ID format in request body.' });
+      }
+
+    const existingSupplier = await Supplier.findById(supplier);
+      if (!existingSupplier) {
+        return res.status(400).json({ message: 'Supplier not found with the provided ID.' });
+      }
     }
 
     const updatedContract = await Contract.findByIdAndUpdate(id, req.body, {
@@ -77,12 +89,12 @@ const updateContract = async (req, res) => {
     });
 
     if (!updatedContract) {
-      return res.status(404).json({ message: 'Contract not found' });
+      return res.status(404).json({ message: contractNotFound });
     }
     res.status(200).json(updatedContract);
   } catch (error) {
     if (error.name === 'CastError' && error.kind === 'ObjectId') {
-        return res.status(400).json({ message: 'Invalid Contract ID format.' });
+        return res.status(400).json({ message: invalidContractIdFormat });
     }
     if (error.name === 'ValidationError') {
       return res.status(400).json({ message: error.message, errors: error.errors });
@@ -99,44 +111,12 @@ const deleteContract = async (req, res) => {
     const deletedContract = await Contract.findByIdAndDelete(id);
 
     if (!deletedContract) {
-      return res.status(404).json({ message: 'Contract not found' });
+      return res.status(404).json({ message: contractNotFound });
     }
-    res.status(200).json({ message: 'Contract deleted successfully' });
+    res.status(200).json({ message: contractDeleted });
   } catch (error) {
     if (error.name === 'CastError' && error.kind === 'ObjectId') {
-        return res.status(400).json({ message: 'Invalid Contract ID format.' });
-    }
-    next(error);
-  }
-};
-
-
-// change the status of a contract
-const changeContractStatus = async (req, res) => {
-  //#swagger.tags = ['Contracts'];
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
-    if (!status || !['active', 'inactive', 'pending', 'expired'].includes(status)) {
-      return res.status(400).json({ message: 'Invalid or missing status provided. Must be one of: active, inactive, pending, expired.' });
-    }
-
-    const updatedContract = await Contract.findByIdAndUpdate(
-      id,
-      { status: status },
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedContract) {
-      return res.status(404).json({ message: 'Contract not found' });
-    }
-    res.status(200).json(updatedContract);
-  } catch (error) {
-    if (error.name === 'CastError' && error.kind === 'ObjectId') {
-        return res.status(400).json({ message: 'Invalid Contract ID format.' });
-    }
-    if (error.name === 'ValidationError') {
-      return res.status(400).json({ message: error.message, errors: error.errors });
+        return res.status(400).json({ message: invalidContractIdFormat });
     }
     next(error);
   }
@@ -148,5 +128,4 @@ module.exports = {
   createContract,
   updateContract,
   deleteContract,
-  changeContractStatus,
 };

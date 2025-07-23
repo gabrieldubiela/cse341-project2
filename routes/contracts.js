@@ -51,17 +51,4 @@ router.put(
 // delete a contract by ID
 router.delete("/:id", contractsController.deleteContract);
 
-// change contract status
-router.patch("/:id/status", 
-    contractValidationRules,
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    next();
-  },
-  contractsController.changeContractStatus
-);
-
 module.exports = router;

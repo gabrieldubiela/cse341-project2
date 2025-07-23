@@ -1,13 +1,8 @@
-const swaggerAutogen = require('swagger-autogen')({ openapi: '3.0.0' });
+const swagger = require('swagger-autogen')({ openapi: '3.0.0' });
 
 const outputFile = 'swagger.json';
 const endpointsFiles = ['./app.js']; 
 
-const isProduction = process.env.NODE_ENV === 'production';
-const host = isProduction && process.env.RENDER_EXTERNAL_HOSTNAME
-    ? process.env.RENDER_EXTERNAL_HOSTNAME 
-    : 'localhost:8080';
-const schemes = isProduction ? ['https'] : ['http'];
 
 const doc = {
   info: {
@@ -15,16 +10,8 @@ const doc = {
     description: 'A REST API for managing suppliers and their contracts, built with Node.js, Express, and MongoDB.',
     version: '1.0.0',
   },
-  servers: [
-    {
-      url: isProduction && renderExternalHostname
-           ? `https://${renderExternalHostname}/` 
-           : 'http://localhost:8080/',           
-      description: isProduction ? 'Production Server (Render)' : 'Local Development Server'
-    }
-  ],
-  basePath: '/',
-  schemes: schemes,
+  host: 'cse341-project2-jpoj.onrender.com',
+    schemes: ['https'],
   tags: [
     {
       name: 'Suppliers',
@@ -97,6 +84,6 @@ const doc = {
   }
 };
 
-swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
+swagger(outputFile, endpointsFiles, doc).then(() => {
   console.log('Swagger documentation generated successfully!');
 });

@@ -19,7 +19,7 @@ const doc = {
       email: 'your.email@example.com',
     },
   },
-  host: 'host', 
+  host: host, 
   basePath: '/',
   schemes: schemes,
   tags: [

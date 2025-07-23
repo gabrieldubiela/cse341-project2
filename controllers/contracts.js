@@ -73,7 +73,7 @@ const updateContract = async (req, res) => {
     const updatedContract = await Contract.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
-    }).populate('supplier');
+    }).populate('supplier, object, startDate, endDate, value, status');
 
     if (!updatedContract) {
       return res.status(404).json({ message: 'Contract not found' });

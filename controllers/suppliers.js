@@ -49,7 +49,7 @@ const createSupplier = async (req, res) => {
     next(error);
   }
 };
-
+  
 // edit a supplier by ID
 const updateSupplier = async (req, res) => {
   //#swagger.tags = ['Suppliers'];

@@ -535,11 +535,11 @@
                 "properties": {
                   "type": {
                     "type": "string",
-                    "example": "number"
+                    "example": "string"
                   },
                   "example": {
-                    "type": "number",
-                    "example": 1001
+                    "type": "string",
+                    "example": "03/2025"
                   }
                 }
               },

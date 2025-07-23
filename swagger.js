@@ -44,7 +44,7 @@ const doc = {
         type: 'object',
         properties: {
           _id: { type: 'string', description: 'The auto-generated ID' },
-          contractNumber: { type: 'number', example: 1001 },
+          contractNumber: { type: 'string', example: '03/2025' },
           supplier: { type: 'string', description: 'ID of the associated supplier', example: '60c72b2f9b1e8e0015b6d5f0' },
           object: { type: 'string', example: 'Annual IT Support Agreement' },
           startDate: { type: 'string', format: 'date-time', example: '2024-01-01T00:00:00Z' },

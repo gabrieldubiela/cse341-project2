@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Supplier = require("../models/suppliers");
 
 // show all suppliers
-const getAllSuppliers = async (req, res) => {
+const getAllSuppliers = async (req, res, next) => {
   //#swagger.tags = ['Suppliers'];
   try {
     const suppliers = await Supplier.find();
@@ -13,7 +13,7 @@ const getAllSuppliers = async (req, res) => {
 };
 
 // show supplier by ID
-const getSingleSupplier = async (req, res) => {
+const getSingleSupplier = async (req, res, next) => {
   //#swagger.tags = ['Suppliers'];
   try {
     const supplier = await Supplier.findById(req.params.id);
@@ -30,7 +30,7 @@ const getSingleSupplier = async (req, res) => {
 };
 
 // create a new supplier
-const createSupplier = async (req, res) => {
+const createSupplier = async (req, res, next) => {
   //#swagger.tags = ['Suppliers'];
   const supplier = new Supplier({
     name: req.body.name,
@@ -52,7 +52,7 @@ const createSupplier = async (req, res) => {
 };
   
 // edit a supplier by ID
-const updateSupplier = async (req, res) => {
+const updateSupplier = async (req, res, next) => {
   //#swagger.tags = ['Suppliers'];
   try {
     const { id } = req.params;
@@ -78,7 +78,7 @@ const updateSupplier = async (req, res) => {
 };
 
 // delete a supplier by ID
-const deleteSupplier = async (req, res) => {
+const deleteSupplier = async (req, res, next) => {
   //#swagger.tags = ['Suppliers'];
   try {
     const { id } = req.params;

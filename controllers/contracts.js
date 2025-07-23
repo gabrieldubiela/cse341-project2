@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const Contract = require("../models/contracts");
 const Supplier = require("../models/suppliers");
@@ -11,7 +11,7 @@ const invalidContractIdFormat = "Contract ID don't have 24 characters.";
 const contractDeleted = "Contract deleted successfully";
 
 // show all contracts
-const getAllContracts = async (req, res) => {
+const getAllContracts = async (req, res, next) => {
   //#swagger.tags = ['Contracts'];
   try {
     const contracts = await Contract.find();
@@ -22,7 +22,7 @@ const getAllContracts = async (req, res) => {
 };
 
 // show a contract by ID
-const getSingleContract = async (req, res) => {
+const getSingleContract = async (req, res, next) => {
   //#swagger.tags = ['Contracts'];
   try {
     const contract = await Contract.findById(req.params.id);
@@ -39,7 +39,7 @@ const getSingleContract = async (req, res) => {
 };
 
 // create a new contract
-const createContract = async (req, res) => {
+const createContract = async (req, res, next) => {
   //#swagger.tags = ['Contracts'];
   try {
     const newContract = new Contract({
@@ -117,7 +117,7 @@ const updateContract = async (req, res, next) => {
 };
 
 // delete a contract by ID
-const deleteContract = async (req, res) => {
+const deleteContract = async (req, res, next) => {
   //#swagger.tags = ['Contracts'];
   try {
     const { id } = req.params;

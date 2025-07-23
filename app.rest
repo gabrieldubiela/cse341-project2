@@ -1,0 +1,80 @@
+### Home page
+GET http://localhost:8080/
+
+### Create a new Supplier
+POST http://localhost:8080/suppliers
+Content-Type: application/json
+
+{
+  "name": "Supplier A",
+  "contactPerson": "John Doe",
+  "email": "john.doe@supplierA.com",
+  "phone": "111-222-3333",
+  "address": "100 Industry Blvd, Suite 200"
+}
+
+### Get All Suppliers
+GET http://localhost:8080/suppliers
+
+### Get Supplier by ID
+GET http://localhost:8080/suppliers/<supplier_id>
+
+### Update a Supplier
+PATCH http://localhost:8080/suppliers/<supplier_id>
+Content-Type: application/json
+
+{
+  "name": "Supplier A",
+  "contactPerson": "John Doe",
+  "email": "updated.john.doe@supplierA.com",
+  "phone": "555-987-6543",
+  "address": "100 Industry Blvd, Suite 200"
+}
+
+### Delete a Supplier
+DELETE http://localhost:8080/suppliers/<supplier_id>
+
+### Create a new Contract
+POST http://localhost:8080/contracts
+Content-Type: application/json
+
+{
+  "contractNumber": 2001,
+  "supplier": "688061adf9cb2e09183f86ed",
+  "object": "Cloud Services Subscription",
+  "startDate": "2024-07-01T00:00:00Z",
+  "endDate": "2025-06-30T23:59:59Z",
+  "value": 25000.00,
+  "status": "active"
+}
+
+### Get All Contracts
+GET http://localhost:8080/contracts
+
+### Get Contract by ID
+GET http://localhost:8080/contracts/<contract_id>
+
+### Update a Contract (PUT example)
+PUT http://localhost:8080/contracts/<contract_id>
+Content-Type: application/json
+
+{
+  "contractNumber": 2001,
+  "supplier": "<supplier_id>",
+  "object": "Updated Cloud Services & Support",
+  "startDate": "2024-07-01T00:00:00Z",
+  "endDate": "2025-06-30T23:59:59Z",
+  "value": 27500.00,
+  "status": "active"
+}
+
+### Change Contract Status
+PATCH http://localhost:8080/contracts/<contract_id>
+Content-Type: application/json
+
+{
+  "status": "expired"
+}
+
+### Delete a Contract
+DELETE http://localhost:8080/contracts/<contract_id>

@@ -32,7 +32,6 @@ const contractSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ["active", "inactive", "pending", "expired"],
-    default: "pending",
   },
 });
 

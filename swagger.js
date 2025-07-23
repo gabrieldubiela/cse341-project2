@@ -1,8 +1,13 @@
-
 const swaggerAutogen = require('swagger-autogen')({ openapi: '3.0.0' });
 
 const outputFile = 'swagger.json';
 const endpointsFiles = ['./app.js']; 
+
+const isProduction = process.env.NODE_ENV === 'production';
+const host = isProduction && process.env.RENDER_EXTERNAL_HOSTNAME
+    ? process.env.RENDER_EXTERNAL_HOSTNAME 
+    : 'localhost:8080';
+const schemes = isProduction ? ['https'] : ['http'];
 
 const doc = {
   info: {
@@ -14,9 +19,9 @@ const doc = {
       email: 'your.email@example.com',
     },
   },
-  host: 'localhost:8080', 
+  host: 'host', 
   basePath: '/',
-  schemes: ['http', 'https'],
+  schemes: schemes,
   tags: [
     {
       name: 'Suppliers',

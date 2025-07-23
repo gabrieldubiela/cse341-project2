@@ -277,11 +277,14 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         },
         "requestBody": {
@@ -290,25 +293,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "contractNumber": {
-                    "example": "any"
-                  },
                   "supplier": {
-                    "example": "any"
-                  },
-                  "object": {
-                    "example": "any"
-                  },
-                  "startDate": {
-                    "example": "any"
-                  },
-                  "endDate": {
-                    "example": "any"
-                  },
-                  "value": {
-                    "example": "any"
-                  },
-                  "status": {
                     "example": "any"
                   }
                 }

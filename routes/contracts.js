@@ -45,7 +45,7 @@ router.put(
     }
     next();
   },
-  contractsController.createContract
+  contractsController.updateContract
 );
 
 // delete a contract by ID

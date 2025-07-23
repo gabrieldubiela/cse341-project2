@@ -144,6 +144,32 @@
           "404": {
             "description": "Not Found"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "example": "any"
+                  },
+                  "contactPerson": {
+                    "example": "any"
+                  },
+                  "email": {
+                    "example": "any"
+                  },
+                  "phone": {
+                    "example": "any"
+                  },
+                  "address": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "delete": {
@@ -294,6 +320,24 @@
                 "type": "object",
                 "properties": {
                   "supplier": {
+                    "example": "any"
+                  },
+                  "contractNumber": {
+                    "example": "any"
+                  },
+                  "object": {
+                    "example": "any"
+                  },
+                  "startDate": {
+                    "example": "any"
+                  },
+                  "endDate": {
+                    "example": "any"
+                  },
+                  "value": {
+                    "example": "any"
+                  },
+                  "status": {
                     "example": "any"
                   }
                 }

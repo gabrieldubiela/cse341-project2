@@ -63,6 +63,7 @@ const updateContract = async (req, res) => {
   //#swagger.tags = ['Contracts'];
   try {
     const { id } = req.params;
+    const { contractNumber, supplier, object, startDate, endDate, value, status } = req.body;
     if (req.body.supplier) {
         const existingSupplier = await Supplier.findById(req.body.supplier);
         if (!existingSupplier) {
@@ -73,7 +74,7 @@ const updateContract = async (req, res) => {
     const updatedContract = await Contract.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
-    }).populate();
+    });
 
     if (!updatedContract) {
       return res.status(404).json({ message: 'Contract not found' });
@@ -124,7 +125,7 @@ const changeContractStatus = async (req, res) => {
       id,
       { status: status },
       { new: true, runValidators: true }
-    ).populate('supplier');
+    );
 
     if (!updatedContract) {
       return res.status(404).json({ message: 'Contract not found' });

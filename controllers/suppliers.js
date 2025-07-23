@@ -55,6 +55,7 @@ const updateSupplier = async (req, res) => {
   //#swagger.tags = ['Suppliers'];
   try {
     const { id } = req.params;
+    const { name, contactPerson, email, phone, address } = req.body;
     const updatedSupplier = await Supplier.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,

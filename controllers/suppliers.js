@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Supplier = require("../models/suppliers");
 
 // show all suppliers

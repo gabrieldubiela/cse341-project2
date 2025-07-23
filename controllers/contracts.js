@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const Contract = require("../models/contracts");
 const Supplier = require("../models/suppliers");
 

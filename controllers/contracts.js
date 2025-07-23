@@ -68,7 +68,7 @@ const createContract = async (req, res) => {
 };
 
 // edit a contract
-const updateContract = async (req, res) => {
+const updateContract = async (req, res, next) => {
   //#swagger.tags = ['Contracts'];
   try {
     const { id } = req.params;

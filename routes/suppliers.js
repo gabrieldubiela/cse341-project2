@@ -44,7 +44,7 @@ router.put(
     }
     next();
   },
-  suppliersController.createSupplier
+  suppliersController.updateSupplier
 );
 
 // delete a supplier by ID

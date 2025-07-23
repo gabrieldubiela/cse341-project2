@@ -25,11 +25,18 @@
     {
       "name": "Contracts",
       "description": "Operations related to contracts"
+    },
+    {
+      "name": "Home Page",
+      "description": "Basic route for the API"
     }
   ],
   "paths": {
     "/": {
       "get": {
+        "tags": [
+          "Home Page"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -47,9 +54,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       },
@@ -114,15 +118,65 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       },
       "put": {
+        "tags": [
+          "Suppliers"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "example": "any"
+                  },
+                  "contactPerson": {
+                    "example": "any"
+                  },
+                  "email": {
+                    "example": "any"
+                  },
+                  "phone": {
+                    "example": "any"
+                  },
+                  "address": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
         "tags": [
           "Suppliers"
         ],
@@ -148,33 +202,6 @@
             "description": "Not Found"
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "Suppliers"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
       }
     },
     "/contracts/": {
@@ -186,9 +213,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       },
@@ -259,11 +283,11 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       },
@@ -283,14 +307,11 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Created"
           },
           "400": {
             "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
           }
         },
         "requestBody": {
@@ -299,10 +320,25 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "contractNumber": {
+                    "example": "any"
+                  },
                   "supplier": {
                     "example": "any"
                   },
-                  "updateData": {
+                  "object": {
+                    "example": "any"
+                  },
+                  "startDate": {
+                    "example": "any"
+                  },
+                  "endDate": {
+                    "example": "any"
+                  },
+                  "value": {
+                    "example": "any"
+                  },
+                  "status": {
                     "example": "any"
                   }
                 }
@@ -330,11 +366,11 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -356,14 +392,11 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Created"
           },
           "400": {
             "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
           }
         },
         "requestBody": {
@@ -372,6 +405,24 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "contractNumber": {
+                    "example": "any"
+                  },
+                  "supplier": {
+                    "example": "any"
+                  },
+                  "object": {
+                    "example": "any"
+                  },
+                  "startDate": {
+                    "example": "any"
+                  },
+                  "endDate": {
+                    "example": "any"
+                  },
+                  "value": {
+                    "example": "any"
+                  },
                   "status": {
                     "example": "any"
                   }

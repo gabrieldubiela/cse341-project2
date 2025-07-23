@@ -26,6 +26,10 @@ const doc = {
       name: 'Contracts',
       description: 'Operations related to contracts',
     },
+    {
+      name: 'Home Page',
+      description: 'Basic route for the API',
+    },
   ],
   components: {
     schemas: {

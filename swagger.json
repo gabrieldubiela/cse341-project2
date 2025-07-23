@@ -3,15 +3,12 @@
   "info": {
     "title": "Suppliers and Contracts API",
     "description": "A REST API for managing suppliers and their contracts, built with Node.js, Express, and MongoDB.",
-    "version": "1.0.0",
-    "contact": {
-      "name": "Your Name",
-      "email": "your.email@example.com"
-    }
+    "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://localhost:8080/"
+      "url": "http://localhost:8080/",
+      "description": "Local Development Server"
     }
   ],
   "tags": [

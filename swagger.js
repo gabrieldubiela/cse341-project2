@@ -14,12 +14,15 @@ const doc = {
     title: 'Suppliers and Contracts API',
     description: 'A REST API for managing suppliers and their contracts, built with Node.js, Express, and MongoDB.',
     version: '1.0.0',
-    contact: {
-      name: 'Your Name',
-      email: 'your.email@example.com',
-    },
   },
-  host: host, 
+  servers: [
+    {
+      url: isProduction && renderExternalHostname
+           ? `https://${renderExternalHostname}/` 
+           : 'http://localhost:8080/',           
+      description: isProduction ? 'Production Server (Render)' : 'Local Development Server'
+    }
+  ],
   basePath: '/',
   schemes: schemes,
   tags: [

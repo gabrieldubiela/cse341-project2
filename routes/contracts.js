@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const contractsController = require("../controllers/contracts");
 const { check, validationResult } = require("express-validator");
+const { isAuthenticated } = require("../middleware/authenticate");
 
 const contractValidationRules = [
   check("contractNumber")
@@ -45,6 +46,7 @@ router.get("/:id", contractsController.getSingleContract);
 // create a new contract
 router.post(
   "/",
+  isAuthenticated,
   contractValidationRules,
   (req, res, next) => {
     const errors = validationResult(req);
@@ -59,6 +61,7 @@ router.post(
 // edit a contract by ID
 router.put(
   "/:id",
+  isAuthenticated,
   contractValidationRules,
   (req, res, next) => {
     const errors = validationResult(req);
@@ -71,6 +74,6 @@ router.put(
 );
 
 // delete a contract by ID
-router.delete("/:id", contractsController.deleteContract);
+router.delete("/:id", isAuthenticated, contractsController.deleteContract);
 
 module.exports = router;

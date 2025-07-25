@@ -69,17 +69,13 @@ app.get("/", (req, res) => { res.send(req.session.user !== undefined ? `Logged i
 
 app.get("/github/callback", passport.authenticate("github", { failureRedirect: '/api-docs', session: false }),
   (req, res) => {
-    console.log("--- DEBUG AUTH CALLBACK ---");
-    console.log("1. req.user (do Passport após autenticação):", req.user);
     req.session.user = req.user;
-    console.log("2. req.session.user (após atribuição manual):", req.session.user);
-    console.log("3. Sessão salva. Redirecionando.");
     res.redirect("/");
   }
 );
 
 // API Documentation route
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc)); // New
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 // Use API routes
 app.use("/suppliers", supplierRoutes);
